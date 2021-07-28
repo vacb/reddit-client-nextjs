@@ -47,6 +47,9 @@ model User {
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
   sessions      Session[]
+  post          Post[]
+  comment       Comment[]
+  votes         Vote[]
 }
 
 model VerificationRequest {
@@ -60,3 +63,41 @@ model VerificationRequest {
   @@unique([identifier, token])
 }
 
+model Subreddit {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  posts Post[]
+}
+
+model Post {
+  id          Int       @id @default(autoincrement())
+  title       String
+  body        String
+  subreddit   Subreddit @relation(fields: [subredditId], references: [id])
+  comments    Comment[]
+  user        User      @relation(fields: [userId], references: [id])
+  votes       Vote[]
+  subredditId Int
+  userId      String
+}
+
+model Comment {
+  id     Int    @id @default(autoincrement())
+  body   String
+  user   User   @relation(fields: [userId], references: [id])
+  votes  Vote[]
+  post   Post   @relation(fields: [postId], references: [id])
+  userId String
+  postId Int
+}
+
+model Vote {
+  id         Int      @id @default(autoincrement())
+  isDownvote Boolean
+  user       User     @relation(fields: [userId], references: [id])
+  post       Post?    @relation(fields: [postId], references: [id])
+  comment    Comment? @relation(fields: [commentId], references: [id])
+  userId     String
+  postId     Int?
+  commentId  Int?
+}
