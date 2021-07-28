@@ -52,12 +52,18 @@ export default function Nav() {
       </h3>
       <div>
         {!session && (
-          <button className="text-white font-bold mr-4" onClick={signIn}>
+          <button
+            className="text-white font-bold mr-4"
+            onClick={() => signIn()}
+          >
             Sign In
           </button>
         )}
         {session && (
-          <button className="text-white font-bold mr-4" onClick={signOut}>
+          <button
+            className="text-white font-bold mr-4"
+            onClick={() => signOut()}
+          >
             Sign Out
           </button>
         )}
